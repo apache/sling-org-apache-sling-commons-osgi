@@ -32,7 +32,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * by service ranking.
  */
 public class SortingServiceTracker<T>
-    extends ServiceTracker  {
+    extends ServiceTracker<T, T>  {
 
     private int lastCount = -1;
 
@@ -40,7 +40,7 @@ public class SortingServiceTracker<T>
 
     private List<T> sortedServiceCache;
 
-    private List<ServiceReference> sortedReferences;
+    private List<ServiceReference<T>> sortedReferences;
 
     /**
      * Constructor
@@ -56,7 +56,7 @@ public class SortingServiceTracker<T>
      * @see org.osgi.util.tracker.ServiceTracker#removedService(org.osgi.framework.ServiceReference, java.lang.Object)
      */
     @Override
-    public void removedService(ServiceReference reference, Object service) {
+    public void removedService(ServiceReference<T> reference, T service) {
         this.sortedServiceCache = null;
         this.sortedReferences = null;
         this.context.ungetService(reference);
@@ -66,7 +66,7 @@ public class SortingServiceTracker<T>
      * @see org.osgi.util.tracker.ServiceTrackerCustomizer#modifiedService(org.osgi.framework.ServiceReference, java.lang.Object)
      */
     @Override
-    public void modifiedService(ServiceReference reference, Object service) {
+    public void modifiedService(ServiceReference<T> reference, T service) {
         this.sortedServiceCache = null;
         this.sortedReferences = null;
     }
@@ -75,7 +75,7 @@ public class SortingServiceTracker<T>
      * @see org.osgi.util.tracker.ServiceTrackerCustomizer#addingService(org.osgi.framework.ServiceReference)
      */
     @Override
-    public Object addingService(ServiceReference reference) {
+    public T addingService(ServiceReference<T> reference) {
         this.sortedServiceCache = null;
         this.sortedReferences = null;
         return context.getService(reference);
@@ -89,7 +89,7 @@ public class SortingServiceTracker<T>
         List<T> result = this.sortedServiceCache;
         if ( result == null || this.lastCount < this.getTrackingCount() ) {
             this.lastCount = this.getTrackingCount();
-            final ServiceReference[] references = this.getServiceReferences();
+            final ServiceReference<T>[] references = this.getServiceReferences();
             if ( references == null || references.length == 0 ) {
                 result = Collections.emptyList();
             } else {
@@ -97,7 +97,7 @@ public class SortingServiceTracker<T>
                 result = new ArrayList<T>();
                 for(int i=0;i<references.length;i++) {
                     @SuppressWarnings("unchecked")
-                    final T service = (T)this.getService(references[references.length - 1 - i]);
+                    final T service = this.getService(references[references.length - 1 - i]);
                     if ( service != null ) {
                         result.add(service);
                     }
@@ -112,16 +112,16 @@ public class SortingServiceTracker<T>
      * Return a sorted list of the services references.
      * @return Service list
      */
-    public List<ServiceReference> getSortedServiceReferences() {
-        List<ServiceReference> result = this.sortedReferences;
+    public List<ServiceReference<T>> getSortedServiceReferences() {
+        List<ServiceReference<T>> result = this.sortedReferences;
         if ( result == null || this.lastRefCount < this.getTrackingCount() ) {
             this.lastRefCount = this.getTrackingCount();
-            final ServiceReference[] references = this.getServiceReferences();
+            final ServiceReference<T>[] references = this.getServiceReferences();
             if ( references == null || references.length == 0 ) {
                 result = Collections.emptyList();
             } else {
                 Arrays.sort(references);
-                result = new ArrayList<ServiceReference>();
+                result = new ArrayList<ServiceReference<T>>();
                 for(int i=0;i<references.length;i++) {
                     result.add(references[references.length - 1 - i]);
                 }

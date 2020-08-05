@@ -29,7 +29,9 @@ import java.util.Map;
  * useful utility methods for converting property types.
  *
  * @since 2.1
+ * @deprecated Use {@code org.osgi.util.converter.Converters} instead
  */
+@Deprecated
 public class PropertiesUtil {
 
     /**

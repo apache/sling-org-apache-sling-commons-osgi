@@ -30,7 +30,7 @@ import org.osgi.service.event.EventConstants;
 /**
  * The <code>OsgiUtil</code> is a utility class providing some usefull utility
  * methods.
- * @deprecated Use PropertiesUtil and ServiceUtil instead
+ * @deprecated Use {@code org.osgi.util.converter.Converters} and {@code ServiceUtil} instead
  */
 @Deprecated
 public class OsgiUtil {

@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.sling</groupId>
         <artifactId>sling-bundle-parent</artifactId>
-        <version>39</version>
+        <version>48</version>
         <relativePath />
     </parent>
 
@@ -84,25 +84,35 @@
        <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.annotation.versioning</artifactId>
+            <scope>provided</scope>
        </dependency>
         <!-- OSGi Libraries -->
         <dependency>
             <groupId>org.osgi</groupId>
-            <artifactId>osgi.core</artifactId>
+            <artifactId>org.osgi.framework</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.service.event</artifactId>       
+            <artifactId>org.osgi.util.tracker</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.event</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock-junit4</artifactId>
+            <version>2.12.0</version>
+            <scope>test</scope>
         </dependency>
-
         <dependency>
             <!-- Not used by our code, but need a non-bundle jar for unit tests -->
             <groupId>javax.jcr</groupId>
@@ -121,7 +131,7 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>3.3.3</version>
-            <scope>provided</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

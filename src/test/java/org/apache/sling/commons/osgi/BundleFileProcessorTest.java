@@ -51,9 +51,10 @@ public class BundleFileProcessorTest {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
 
         // Just take any bundle from the maven deps as an example...
-        File originalFile = getMavenArtifactFile(getMavenRepoRoot(), "com.google.guava", "guava", "15.0");
+        File originalFile =
+                getMavenArtifactFile(getMavenRepoRoot(), "org.apache.sling", "org.apache.sling.api", "2.0.6");
 
-        File generatedFile = new BSNRenamer(originalFile, tempDir, "org.acme.baklava.guava").process();
+        File generatedFile = new BSNRenamer(originalFile, tempDir, "org.acme.baklava.sling.api").process();
 
         try {
             compareJarContents(originalFile, generatedFile);
@@ -78,7 +79,7 @@ public class BundleFileProcessorTest {
                                 orgVal,
                                 newAttrs.getValue("X-Original-Bundle-SymbolicName"));
 
-                        assertEquals("org.acme.baklava.guava", newVal);
+                        assertEquals("org.acme.baklava.sling.api", newVal);
                     } else {
                         assertEquals("Different keys: " + key, orgVal, newVal);
                     }

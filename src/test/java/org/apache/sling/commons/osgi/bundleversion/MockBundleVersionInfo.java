@@ -26,26 +26,26 @@ class MockBundleVersionInfo extends BundleVersionInfo<String> {
     private final String symbolicName;
     private final Version version;
     private final long lastModified;
-    
+
     MockBundleVersionInfo() {
         source = null;
         symbolicName = null;
         version = null;
         lastModified = BundleVersionInfo.BND_LAST_MODIFIED_MISSING;
     }
-    
+
     MockBundleVersionInfo(String symbolicName, String version, long lastModified) {
         this.symbolicName = symbolicName;
         this.version = new Version(version);
         this.source = symbolicName + "." + version + "." + lastModified;
         this.lastModified = lastModified;
     }
-    
+
     @Override
     public String toString() {
         return source;
     }
-    
+
     public long getBundleLastModified() {
         return lastModified;
     }

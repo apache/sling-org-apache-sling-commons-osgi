@@ -161,7 +161,6 @@ public class OsgiUtil {
      */
     public static String[] toStringArray(final Object propValue, final String[] defaultArray) {
         return PropertiesUtil.toStringArray(propValue, defaultArray);
-
     }
 
     /**
@@ -176,39 +175,36 @@ public class OsgiUtil {
      * @param props A non-null map of properties for the event.
      * @return The OSGi event.
      */
-    public static Event createEvent(final Bundle sourceBundle,
+    public static Event createEvent(
+            final Bundle sourceBundle,
             final ServiceReference sourceService,
             final String topic,
             final Map<String, Object> props) {
 
         // get a private copy of the properties
-        Dictionary<String, Object> table = new Hashtable<String, Object>(props);
+        Dictionary<String, Object> table = new Hashtable<>(props);
 
         // service information of the provide service reference
         if (sourceService != null) {
             table.put(EventConstants.SERVICE, sourceService);
+            table.put(EventConstants.SERVICE_ID, sourceService.getProperty(org.osgi.framework.Constants.SERVICE_ID));
             table.put(
-                EventConstants.SERVICE_ID,
-                sourceService.getProperty(org.osgi.framework.Constants.SERVICE_ID));
-            table.put(
-                EventConstants.SERVICE_OBJECTCLASS,
-                sourceService.getProperty(org.osgi.framework.Constants.OBJECTCLASS));
+                    EventConstants.SERVICE_OBJECTCLASS,
+                    sourceService.getProperty(org.osgi.framework.Constants.OBJECTCLASS));
             if (sourceService.getProperty(org.osgi.framework.Constants.SERVICE_PID) != null) {
                 table.put(
-                    EventConstants.SERVICE_PID,
-                    sourceService.getProperty(org.osgi.framework.Constants.SERVICE_PID));
+                        EventConstants.SERVICE_PID,
+                        sourceService.getProperty(org.osgi.framework.Constants.SERVICE_PID));
             }
         }
 
         // source bundle information (if available)
         if (sourceBundle != null) {
-            table.put(EventConstants.BUNDLE_SYMBOLICNAME,
-                sourceBundle.getSymbolicName());
+            table.put(EventConstants.BUNDLE_SYMBOLICNAME, sourceBundle.getSymbolicName());
         }
 
         // timestamp the event
-        table.put(EventConstants.TIMESTAMP,
-            new Long(System.currentTimeMillis()));
+        table.put(EventConstants.TIMESTAMP, System.currentTimeMillis());
 
         // create the event
         return new Event(topic, table);

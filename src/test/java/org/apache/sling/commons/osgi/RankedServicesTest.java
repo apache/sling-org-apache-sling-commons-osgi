@@ -18,90 +18,93 @@
  */
 package org.apache.sling.commons.osgi;
 
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
+import org.apache.sling.commons.osgi.RankedServices.ChangeListener;
+import org.junit.Test;
+import org.osgi.framework.Constants;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.util.Map;
-
-import org.apache.sling.commons.osgi.RankedServices.ChangeListener;
-import org.junit.Test;
-import org.osgi.framework.Constants;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
-
 public class RankedServicesTest {
 
-  private static final String SERVICE_1 = "service1";
-  private static final Map<String, Object> SERVICE_1_PROPS = ImmutableMap.<String, Object>builder()
-      .put(Constants.SERVICE_RANKING, 50).put(Constants.SERVICE_ID, 1L).build();
-  private static final String SERVICE_2 = "service2";
-  private static final Map<String, Object> SERVICE_2_PROPS = ImmutableMap.<String, Object>builder()
-      .put(Constants.SERVICE_RANKING, 10).put(Constants.SERVICE_ID, 2L).build();
-  private static final String SERVICE_3 = "service3";
-  private static final Map<String, Object> SERVICE_3_PROPS = ImmutableMap.<String, Object>builder()
-      .put(Constants.SERVICE_RANKING, 100).put(Constants.SERVICE_ID, 3L).build();
+    private static final String SERVICE_1 = "service1";
+    private static final Map<String, Object> SERVICE_1_PROPS = ImmutableMap.<String, Object>builder()
+            .put(Constants.SERVICE_RANKING, 50)
+            .put(Constants.SERVICE_ID, 1L)
+            .build();
+    private static final String SERVICE_2 = "service2";
+    private static final Map<String, Object> SERVICE_2_PROPS = ImmutableMap.<String, Object>builder()
+            .put(Constants.SERVICE_RANKING, 10)
+            .put(Constants.SERVICE_ID, 2L)
+            .build();
+    private static final String SERVICE_3 = "service3";
+    private static final Map<String, Object> SERVICE_3_PROPS = ImmutableMap.<String, Object>builder()
+            .put(Constants.SERVICE_RANKING, 100)
+            .put(Constants.SERVICE_ID, 3L)
+            .build();
 
-  @Test
-  public void testSortedServicesAscending() {
-    RankedServices<Comparable> underTest = new RankedServices<Comparable>();
-    assertEquals(0, underTest.get().size());
+    @Test
+    public void testSortedServicesAscending() {
+        RankedServices<Comparable> underTest = new RankedServices<Comparable>();
+        assertEquals(0, underTest.get().size());
 
-    underTest.bind(SERVICE_1, SERVICE_1_PROPS);
-    assertEquals(1, underTest.get().size());
-    Comparable[] services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
-    assertSame(SERVICE_1, services[0]);
+        underTest.bind(SERVICE_1, SERVICE_1_PROPS);
+        assertEquals(1, underTest.get().size());
+        Comparable[] services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
+        assertSame(SERVICE_1, services[0]);
 
-    underTest.bind(SERVICE_2, SERVICE_2_PROPS);
-    underTest.bind(SERVICE_3, SERVICE_3_PROPS);
-    assertEquals(3, underTest.get().size());
-    services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
-    assertSame(SERVICE_2, services[0]);
-    assertSame(SERVICE_1, services[1]);
-    assertSame(SERVICE_3, services[2]);
+        underTest.bind(SERVICE_2, SERVICE_2_PROPS);
+        underTest.bind(SERVICE_3, SERVICE_3_PROPS);
+        assertEquals(3, underTest.get().size());
+        services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
+        assertSame(SERVICE_2, services[0]);
+        assertSame(SERVICE_1, services[1]);
+        assertSame(SERVICE_3, services[2]);
 
-    underTest.unbind(SERVICE_2, SERVICE_2_PROPS);
-    assertEquals(2, underTest.get().size());
-    services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
-    assertSame(SERVICE_1, services[0]);
-    assertSame(SERVICE_3, services[1]);
-  }
+        underTest.unbind(SERVICE_2, SERVICE_2_PROPS);
+        assertEquals(2, underTest.get().size());
+        services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
+        assertSame(SERVICE_1, services[0]);
+        assertSame(SERVICE_3, services[1]);
+    }
 
+    @Test
+    public void testSortedServicesDescending() {
+        RankedServices<Comparable> underTest = new RankedServices<Comparable>(Order.DESCENDING);
+        assertEquals(0, underTest.get().size());
 
-  @Test
-  public void testSortedServicesDescending() {
-    RankedServices<Comparable> underTest = new RankedServices<Comparable>(Order.DESCENDING);
-    assertEquals(0, underTest.get().size());
+        underTest.bind(SERVICE_1, SERVICE_1_PROPS);
+        assertEquals(1, underTest.get().size());
+        Comparable[] services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
+        assertSame(SERVICE_1, services[0]);
 
-    underTest.bind(SERVICE_1, SERVICE_1_PROPS);
-    assertEquals(1, underTest.get().size());
-    Comparable[] services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
-    assertSame(SERVICE_1, services[0]);
+        underTest.bind(SERVICE_2, SERVICE_2_PROPS);
+        underTest.bind(SERVICE_3, SERVICE_3_PROPS);
+        assertEquals(3, underTest.get().size());
+        services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
+        assertSame(SERVICE_3, services[0]);
+        assertSame(SERVICE_1, services[1]);
+        assertSame(SERVICE_2, services[2]);
 
-    underTest.bind(SERVICE_2, SERVICE_2_PROPS);
-    underTest.bind(SERVICE_3, SERVICE_3_PROPS);
-    assertEquals(3, underTest.get().size());
-    services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
-    assertSame(SERVICE_3, services[0]);
-    assertSame(SERVICE_1, services[1]);
-    assertSame(SERVICE_2, services[2]);
+        underTest.unbind(SERVICE_2, SERVICE_2_PROPS);
+        assertEquals(2, underTest.get().size());
+        services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
+        assertSame(SERVICE_3, services[0]);
+        assertSame(SERVICE_1, services[1]);
+    }
 
-    underTest.unbind(SERVICE_2, SERVICE_2_PROPS);
-    assertEquals(2, underTest.get().size());
-    services = Iterators.toArray(underTest.get().iterator(), Comparable.class);
-    assertSame(SERVICE_3, services[0]);
-    assertSame(SERVICE_1, services[1]);
-  }
+    @Test
+    public void testChangeListener() {
+        ChangeListener changeListener = mock(ChangeListener.class);
 
-  @Test
-  public void testChangeListener() {
-    ChangeListener changeListener = mock(ChangeListener.class);
-
-    RankedServices<Comparable> underTest = new RankedServices<Comparable>(changeListener);
-    underTest.bind(SERVICE_1, SERVICE_1_PROPS);
-    verify(changeListener).changed();
-  }
-
+        RankedServices<Comparable> underTest = new RankedServices<Comparable>(changeListener);
+        underTest.bind(SERVICE_1, SERVICE_1_PROPS);
+        verify(changeListener).changed();
+    }
 }

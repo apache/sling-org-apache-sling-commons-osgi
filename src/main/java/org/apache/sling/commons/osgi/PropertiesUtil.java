@@ -46,8 +46,8 @@ public class PropertiesUtil {
      */
     public static boolean toBoolean(Object propValue, boolean defaultValue) {
         propValue = toObject(propValue);
-        if (propValue instanceof Boolean) {
-            return (Boolean) propValue;
+        if (propValue instanceof Boolean b) {
+            return b;
         } else if (propValue != null) {
             return Boolean.parseBoolean(String.valueOf(propValue));
         }
@@ -78,8 +78,8 @@ public class PropertiesUtil {
      */
     public static long toLong(Object propValue, long defaultValue) {
         propValue = toObject(propValue);
-        if (propValue instanceof Long) {
-            return (Long) propValue;
+        if (propValue instanceof Long l) {
+            return l;
         } else if (propValue != null) {
             try {
                 return Long.parseLong(String.valueOf(propValue));
@@ -102,8 +102,8 @@ public class PropertiesUtil {
      */
     public static int toInteger(Object propValue, int defaultValue) {
         propValue = toObject(propValue);
-        if (propValue instanceof Integer) {
-            return (Integer) propValue;
+        if (propValue instanceof Integer i) {
+            return i;
         } else if (propValue != null) {
             try {
                 return Integer.parseInt(String.valueOf(propValue));
@@ -126,8 +126,8 @@ public class PropertiesUtil {
      */
     public static double toDouble(Object propValue, double defaultValue) {
         propValue = toObject(propValue);
-        if (propValue instanceof Double) {
-            return (Double) propValue;
+        if (propValue instanceof Double dbl) {
+            return dbl;
         } else if (propValue != null) {
             try {
                 return Double.parseDouble(String.valueOf(propValue));
@@ -155,8 +155,7 @@ public class PropertiesUtil {
         } else if (propValue.getClass().isArray()) {
             Object[] prop = (Object[]) propValue;
             return prop.length > 0 ? prop[0] : null;
-        } else if (propValue instanceof Collection<?>) {
-            Collection<?> prop = (Collection<?>) propValue;
+        } else if (propValue instanceof Collection<?> prop) {
             return prop.isEmpty() ? null : prop.iterator().next();
         } else {
             return propValue;
@@ -195,18 +194,18 @@ public class PropertiesUtil {
             // no value at all
             return defaultArray;
 
-        } else if (propValue instanceof String) {
+        } else if (propValue instanceof String str) {
             // single string
-            return new String[] { (String) propValue };
+            return new String[] {str};
 
-        } else if (propValue instanceof String[]) {
+        } else if (propValue instanceof String[] strArray) {
             // String[]
-            return (String[]) propValue;
+            return strArray;
 
         } else if (propValue.getClass().isArray()) {
             // other array
             Object[] valueArray = (Object[]) propValue;
-            List<String> values = new ArrayList<String>(valueArray.length);
+            List<String> values = new ArrayList<>(valueArray.length);
             for (Object value : valueArray) {
                 if (value != null) {
                     values.add(value.toString());
@@ -214,10 +213,9 @@ public class PropertiesUtil {
             }
             return values.toArray(new String[values.size()]);
 
-        } else if (propValue instanceof Collection<?>) {
+        } else if (propValue instanceof Collection<?> valueCollection) {
             // collection
-            Collection<?> valueCollection = (Collection<?>) propValue;
-            List<String> valueList = new ArrayList<String>(valueCollection.size());
+            List<String> valueList = new ArrayList<>(valueCollection.size());
             for (Object value : valueCollection) {
                 if (value != null) {
                     valueList.add(value.toString());
@@ -255,8 +253,8 @@ public class PropertiesUtil {
             return null;
         }
 
-        //in property values
-        Map<String, String> result = new LinkedHashMap<String, String>();
+        // in property values
+        Map<String, String> result = new LinkedHashMap<>();
         for (String kv : arrayValue) {
             int indexOfEqual = kv.indexOf('=');
             if (indexOfEqual > 0) {
@@ -270,17 +268,16 @@ public class PropertiesUtil {
         return result;
     }
 
-    private static String trimToNull(String str)    {
+    private static String trimToNull(String str) {
         String ts = trim(str);
         return isEmpty(ts) ? null : ts;
     }
 
-    private static String trim(String str){
+    private static String trim(String str) {
         return str == null ? null : str.trim();
     }
 
-    private static boolean isEmpty(String str){
+    private static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
     }
-
 }

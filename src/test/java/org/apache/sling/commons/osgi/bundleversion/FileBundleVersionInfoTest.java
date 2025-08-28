@@ -18,27 +18,27 @@
  */
 package org.apache.sling.commons.osgi.bundleversion;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
 import org.osgi.framework.Version;
 
+import static org.junit.Assert.*;
+
 public class FileBundleVersionInfoTest {
-    
+
     private File getTestJar(String namePrefix) {
         final File testJarsFolder = new File(System.getProperty("test.jars.folder"));
-        for(String jar : testJarsFolder.list()) {
-            if(jar.startsWith(namePrefix)) {
+        for (String jar : testJarsFolder.list()) {
+            if (jar.startsWith(namePrefix)) {
                 return new File(testJarsFolder, jar);
             }
         }
         fail("No test jar found with prefix " + namePrefix + " in " + testJarsFolder.getAbsolutePath());
         return null;
     }
-    
+
     @Test
     public void testSlingApiJar() throws IOException {
         final File testJar = getTestJar("org.apache.sling.api");
@@ -50,9 +50,9 @@ public class FileBundleVersionInfoTest {
         assertTrue(vi.isBundle());
         final Object src = vi.getSource();
         assertTrue(src instanceof File);
-        assertEquals(testJar.getAbsolutePath(), ((File)src).getAbsolutePath());
+        assertEquals(testJar.getAbsolutePath(), ((File) src).getAbsolutePath());
     }
-    
+
     @Test
     public void testSlf4jJar() throws IOException {
         final File testJar = getTestJar("jcr");
@@ -63,6 +63,6 @@ public class FileBundleVersionInfoTest {
         assertEquals(BundleVersionInfo.BND_LAST_MODIFIED_MISSING, vi.getBundleLastModified());
         final Object src = vi.getSource();
         assertTrue(src instanceof File);
-        assertEquals(testJar.getAbsolutePath(), ((File)src).getAbsolutePath());
+        assertEquals(testJar.getAbsolutePath(), ((File) src).getAbsolutePath());
     }
 }

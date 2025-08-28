@@ -31,8 +31,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * Implementation providing a sorted list of services
  * by service ranking.
  */
-public class SortingServiceTracker<T>
-    extends ServiceTracker<T, T>  {
+public class SortingServiceTracker<T> extends ServiceTracker<T, T> {
 
     private int lastCount = -1;
 
@@ -47,8 +46,7 @@ public class SortingServiceTracker<T>
      * @param context Bundle context
      * @param clazz Class
      */
-    public SortingServiceTracker(final BundleContext context,
-            final String clazz) {
+    public SortingServiceTracker(final BundleContext context, final String clazz) {
         super(context, clazz, null);
     }
 
@@ -87,18 +85,17 @@ public class SortingServiceTracker<T>
      */
     public List<T> getSortedServices() {
         List<T> result = this.sortedServiceCache;
-        if ( result == null || this.lastCount < this.getTrackingCount() ) {
+        if (result == null || this.lastCount < this.getTrackingCount()) {
             this.lastCount = this.getTrackingCount();
             final ServiceReference<T>[] references = this.getServiceReferences();
-            if ( references == null || references.length == 0 ) {
+            if (references == null || references.length == 0) {
                 result = Collections.emptyList();
             } else {
                 Arrays.sort(references);
-                result = new ArrayList<T>();
-                for(int i=0;i<references.length;i++) {
-                    @SuppressWarnings("unchecked")
+                result = new ArrayList<>();
+                for (int i = 0; i < references.length; i++) {
                     final T service = this.getService(references[references.length - 1 - i]);
-                    if ( service != null ) {
+                    if (service != null) {
                         result.add(service);
                     }
                 }
@@ -114,15 +111,15 @@ public class SortingServiceTracker<T>
      */
     public List<ServiceReference<T>> getSortedServiceReferences() {
         List<ServiceReference<T>> result = this.sortedReferences;
-        if ( result == null || this.lastRefCount < this.getTrackingCount() ) {
+        if (result == null || this.lastRefCount < this.getTrackingCount()) {
             this.lastRefCount = this.getTrackingCount();
             final ServiceReference<T>[] references = this.getServiceReferences();
-            if ( references == null || references.length == 0 ) {
+            if (references == null || references.length == 0) {
                 result = Collections.emptyList();
             } else {
                 Arrays.sort(references);
-                result = new ArrayList<ServiceReference<T>>();
-                for(int i=0;i<references.length;i++) {
+                result = new ArrayList<>();
+                for (int i = 0; i < references.length; i++) {
                     result.add(references[references.length - 1 - i]);
                 }
             }

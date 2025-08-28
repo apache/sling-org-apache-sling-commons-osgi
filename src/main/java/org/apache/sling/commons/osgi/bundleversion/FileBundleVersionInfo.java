@@ -40,7 +40,7 @@ public class FileBundleVersionInfo extends BundleVersionInfo<File> {
         final JarFile f = new JarFile(bundle);
         try {
             final Manifest m = f.getManifest();
-            if(m == null) {
+            if (m == null) {
                 symbolicName = null;
                 version = null;
                 isSnapshot = false;
@@ -52,10 +52,10 @@ public class FileBundleVersionInfo extends BundleVersionInfo<File> {
                 isSnapshot = v != null && v.contains(SNAPSHOT_MARKER);
                 final String last = m.getMainAttributes().getValue(BND_LAST_MODIFIED);
                 long lastMod = BND_LAST_MODIFIED_MISSING;
-                if(last != null) {
+                if (last != null) {
                     try {
                         lastMod = Long.parseLong(last);
-                    } catch(NumberFormatException ignore) {
+                    } catch (NumberFormatException ignore) {
                     }
                 }
                 lastModified = lastMod;

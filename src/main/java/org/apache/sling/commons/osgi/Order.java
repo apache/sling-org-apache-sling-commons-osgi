@@ -20,7 +20,7 @@ package org.apache.sling.commons.osgi;
 
 /**
  * Order for services being sorted by {@link ServiceUtil#getComparableForServiceRanking(java.util.Map, Order)}
- * or {@link RankedServices}. Either {@link #ASCENDING} meaning services with lowest service ranking first or 
+ * or {@link RankedServices}. Either {@link #ASCENDING} meaning services with lowest service ranking first or
  * {@link #DESCENDING} meaning services with highest service ranking first.
  */
 public enum Order {

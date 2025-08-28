@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
-
 import org.osgi.framework.Constants;
 
 @SuppressWarnings("deprecation")
@@ -113,20 +112,20 @@ public class OsgiUtilTest extends TestCase {
     }
 
     private void equals(final String[] a, final String[] b) {
-        if ( a == null && b == null ) {
+        if (a == null && b == null) {
             return;
         }
-        if ( a == null ) {
+        if (a == null) {
             fail("Array is not null: " + b);
         }
-        if ( b == null ) {
+        if (b == null) {
             fail("Array is null, expected is: " + a);
         }
-        if ( a.length != b.length ) {
-            fail("Length differs: expect " + a .length + ", received " + b.length);
+        if (a.length != b.length) {
+            fail("Length differs: expect " + a.length + ", received " + b.length);
         }
-        for(int i=0; i < a.length; i++) {
-            if ( ! a[i].equals(b[i])) {
+        for (int i = 0; i < a.length; i++) {
+            if (!a[i].equals(b[i])) {
                 fail("Expected " + a[i] + " at index " + i + ", but is " + b[i]);
             }
         }
@@ -151,6 +150,8 @@ public class OsgiUtilTest extends TestCase {
         map1.put(Constants.SERVICE_RANKING, "hello");
         assertEquals(-1, OsgiUtil.getComparableForServiceRanking(map1).compareTo(map2));
         assertEquals(1, OsgiUtil.getComparableForServiceRanking(map2).compareTo(map1));
-        assertEquals(1, OsgiUtil.getComparableForServiceRanking(map2).compareTo(OsgiUtil.getComparableForServiceRanking(map1)));
+        assertEquals(
+                1,
+                OsgiUtil.getComparableForServiceRanking(map2).compareTo(OsgiUtil.getComparableForServiceRanking(map1)));
     }
 }

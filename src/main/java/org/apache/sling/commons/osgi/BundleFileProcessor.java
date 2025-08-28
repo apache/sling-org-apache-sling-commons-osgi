@@ -31,20 +31,20 @@ import java.util.jar.Manifest;
 
 /**
  * The <code>BundleFileProcessor</code> can transform a bundle Manifest
- * by creating a modified copy of the bundle file. 
+ * by creating a modified copy of the bundle file.
  * @since 2.4
  */
 public abstract class BundleFileProcessor {
-    
+
     private final File input;
     private final File outputFolder;
-    
+
     public BundleFileProcessor(File input, File outputFolder) {
         this.input = input;
         this.outputFolder = outputFolder;
     }
-    
-    /** 
+
+    /**
      * Process the bundle Manifest. Can return the original
      * one if no changes are needed.
      * @param originalManifest The manifest to process
@@ -52,13 +52,13 @@ public abstract class BundleFileProcessor {
      */
     protected abstract Manifest processManifest(Manifest originalManifest);
 
-    /** 
-     * Return the filename to use for the newly created bundle file 
+    /**
+     * Return the filename to use for the newly created bundle file
      * @param inputJarManifest The manifest
      * @return The filename
      */
     protected abstract String getTargetFilename(Manifest inputJarManifest);
-    
+
     /**
      * Creates a new OSGi Bundle from a given bundle, processing its manifest
      * using the processManifest method.
@@ -66,37 +66,24 @@ public abstract class BundleFileProcessor {
      * @throws IOException If something goes wrong reading or writing.
      */
     public File process() throws IOException {
-        JarInputStream jis = null;
-        try {
-            jis = new JarInputStream(new FileInputStream(input));
+        try (JarInputStream jis = new JarInputStream(new FileInputStream(input))) {
             Manifest oldMF = jis.getManifest();
             Manifest newMF = processManifest(oldMF);
             File newBundle = new File(outputFolder, getTargetFilename(oldMF));
 
-            JarOutputStream jos = null;
-            try {
-                jos = new JarOutputStream(new FileOutputStream(newBundle), newMF);
+            try (JarOutputStream jos = new JarOutputStream(new FileOutputStream(newBundle), newMF)) {
                 JarEntry je = null;
                 while ((je = jis.getNextJarEntry()) != null) {
                     try {
                         jos.putNextEntry(je);
-                        if (!je.isDirectory())
-                            pumpStream(jis, jos);
+                        if (!je.isDirectory()) pumpStream(jis, jos);
                     } finally {
                         jos.closeEntry();
-                        jis.closeEntry();;
+                        jis.closeEntry();
                     }
-                }
-            } finally {
-                if(jos != null) {
-                    jos.close();
                 }
             }
             return newBundle;
-        } finally {
-            if(jis != null) {
-                jis.close();
-            }
         }
     }
 

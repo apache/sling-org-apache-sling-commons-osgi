@@ -60,7 +60,7 @@ public class ManifestHeader {
      * Add new entries from parsing.
      */
     private void add(Entry[] paths) {
-        if ( paths != null && paths.length > 0 ) {
+        if (paths != null && paths.length > 0) {
             final Entry[] copy = new Entry[this.entries.length + paths.length];
             System.arraycopy(this.entries, 0, copy, 0, this.entries.length);
             System.arraycopy(paths, 0, copy, this.entries.length, paths.length);
@@ -78,7 +78,7 @@ public class ManifestHeader {
     /**
      * Directives and attributes are simple name/value pairs.
      */
-    public final static class NameValuePair {
+    public static final class NameValuePair {
 
         private final String name;
         private final String value;
@@ -119,8 +119,8 @@ public class ManifestHeader {
             }
 
             final String[] clauseStrings = parseDelimitedString(header, CLASS_PATH_SEPARATOR);
-            if ( clauseStrings != null ) {
-                for(final String clause : clauseStrings) {
+            if (clauseStrings != null) {
+                for (final String clause : clauseStrings) {
                     entry.add(parseStandardHeaderClause(clause));
                 }
             }
@@ -134,7 +134,7 @@ public class ManifestHeader {
      * Like this: path; path; dir1:=dirval1; dir2:=dirval2; attr1=attrval1; attr2=attrval2
      */
     private static ManifestHeader.Entry[] parseStandardHeaderClause(String clauseString)
-    throws IllegalArgumentException {
+            throws IllegalArgumentException {
         // Break string into semi-colon delimited pieces.
         String[] pieces = parseDelimitedString(clauseString, PACKAGE_SEPARATOR);
 
@@ -152,13 +152,12 @@ public class ManifestHeader {
 
         // Error if no paths were specified.
         if (pathCount == 0) {
-            throw new IllegalArgumentException(
-                "No paths specified in header: " + clauseString);
+            throw new IllegalArgumentException("No paths specified in header: " + clauseString);
         }
 
         // Create an array of paths.
         PathImpl[] paths = new PathImpl[pathCount];
-        for(int i=0;i<pathCount;i++) {
+        for (int i = 0; i < pathCount; i++) {
             paths[i] = new PathImpl(pieces[i]);
         }
 
@@ -166,10 +165,10 @@ public class ManifestHeader {
         // and keep the order
         // for simpliefied checking if a directive/attribute is used twice, we keep
         // two collections: one for the values and one for the names
-        final List<ManifestHeader.NameValuePair> dirsList = new ArrayList<ManifestHeader.NameValuePair>();
-        final Set<String> dirsNames = new HashSet<String>();
-        final List<ManifestHeader.NameValuePair> attrsList = new ArrayList<ManifestHeader.NameValuePair>();
-        final Set<String> attrsNames = new HashSet<String>();
+        final List<ManifestHeader.NameValuePair> dirsList = new ArrayList<>();
+        final Set<String> dirsNames = new HashSet<>();
+        final List<ManifestHeader.NameValuePair> attrsList = new ArrayList<>();
+        final Set<String> attrsNames = new HashSet<>();
 
         int idx = -1;
         String sep = null;
@@ -209,15 +208,13 @@ public class ManifestHeader {
             }
         }
         // Create directive array.
-        ManifestHeader.NameValuePair[] dirs =
-            dirsList.toArray(new ManifestHeader.NameValuePair[dirsList.size()]);
+        ManifestHeader.NameValuePair[] dirs = dirsList.toArray(new ManifestHeader.NameValuePair[dirsList.size()]);
 
         // Create attribute array.
-        ManifestHeader.NameValuePair[] attrs =
-            attrsList.toArray(new ManifestHeader.NameValuePair[attrsList.size()]);
+        ManifestHeader.NameValuePair[] attrs = attrsList.toArray(new ManifestHeader.NameValuePair[attrsList.size()]);
 
         // now set attributes and directives for each path
-        for(int i=0;i<pathCount;i++) {
+        for (int i = 0; i < pathCount; i++) {
             paths[i].init(dirs, attrs);
         }
 
@@ -240,10 +237,10 @@ public class ManifestHeader {
      **/
     private static String[] parseDelimitedString(String value, String delim) {
         if (value == null) {
-           value = "";
+            value = "";
         }
 
-        final List<String> list = new ArrayList<String>();
+        final List<String> list = new ArrayList<>();
 
         final StringBuilder sb = new StringBuilder();
 
@@ -276,7 +273,7 @@ public class ManifestHeader {
             list.add(sb.toString().trim());
         }
 
-        if ( list.size() == 0 ) {
+        if (list.isEmpty()) {
             return null;
         }
         return list.toArray(new String[list.size()]);
@@ -322,8 +319,8 @@ public class ManifestHeader {
         public String getAttributeValue(String name) {
             String v = null;
             int index = 0;
-            while ( v == null && index < attributes.length ) {
-                if ( attributes[index].getName().equals(name) ) {
+            while (v == null && index < attributes.length) {
+                if (attributes[index].getName().equals(name)) {
                     v = attributes[index].getValue();
                 }
                 index++;
@@ -334,8 +331,8 @@ public class ManifestHeader {
         public String getDirectiveValue(String name) {
             String v = null;
             int index = 0;
-            while ( v == null && index < directives.length ) {
-                if ( directives[index].getName().equals(name) ) {
+            while (v == null && index < directives.length) {
+                if (directives[index].getName().equals(name)) {
                     v = directives[index].getValue();
                 }
                 index++;

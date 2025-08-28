@@ -30,14 +30,14 @@ import java.util.jar.Manifest;
 public class BSNRenamer extends BundleFileProcessor {
     private final String newBSN;
     public static final String BUNDLE_SYMBOLIC_NAME = "Bundle-SymbolicName";
-    public static final String X_ORIG_BSN = "X-Original-Bundle-SymbolicName"; 
-    public static final String BUNDLE_VERSION = "Bundle-Version"; 
-    
+    public static final String X_ORIG_BSN = "X-Original-Bundle-SymbolicName";
+    public static final String BUNDLE_VERSION = "Bundle-Version";
+
     public BSNRenamer(File input, File outputFolder, String newBSN) {
         super(input, outputFolder);
         this.newBSN = newBSN;
     }
-    
+
     protected Manifest processManifest(Manifest inputMF) {
         Attributes inputAttrs = inputMF.getMainAttributes();
         String orgBSN = inputAttrs.getValue(BUNDLE_SYMBOLIC_NAME);
@@ -47,7 +47,7 @@ public class BSNRenamer extends BundleFileProcessor {
         outputAttrs.putValue(X_ORIG_BSN, orgBSN);
         return newMF;
     }
-    
+
     protected String getTargetFilename(Manifest inputJarManifest) {
         String bver = inputJarManifest.getMainAttributes().getValue(BUNDLE_VERSION);
         if (bver == null) {

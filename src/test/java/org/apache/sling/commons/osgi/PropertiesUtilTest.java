@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.sling.commons.osgi;
 
 import java.util.LinkedHashMap;
@@ -24,29 +23,29 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-public class PropertiesUtilTest extends TestCase{
+public class PropertiesUtilTest extends TestCase {
 
     public void testToMap() {
-        final String[] defaultValue = new String[] {"a1=b1","a2=b2"};
-        Map<String,String> expected = asMap("a1","b1","a2","b2");
-        assertEquals(expected,PropertiesUtil.toMap(new String[] {"a1=b1","a2=b2"},null));
-        assertEquals(null,PropertiesUtil.toMap(null,null));
-        assertEquals(expected,PropertiesUtil.toMap(null,defaultValue));
+        final String[] defaultValue = new String[] {"a1=b1", "a2=b2"};
+        Map<String, String> expected = asMap("a1", "b1", "a2", "b2");
+        assertEquals(expected, PropertiesUtil.toMap(new String[] {"a1=b1", "a2=b2"}, null));
+        assertEquals(null, PropertiesUtil.toMap(null, null));
+        assertEquals(expected, PropertiesUtil.toMap(null, defaultValue));
 
-        //Trimming
-        assertEquals(expected,PropertiesUtil.toMap(new String[] {"a1 = b1 "," a2 = b2 "},null));
+        // Trimming
+        assertEquals(expected, PropertiesUtil.toMap(new String[] {"a1 = b1 ", " a2 = b2 "}, null));
 
-        //Malformed handling
-        assertEquals(expected,PropertiesUtil.toMap(new String[] {"a1 = b1 "," a2 = b2 ","a3"},null));
-        assertEquals(asMap("a1","b1","a2","b2","a4",null),
-                PropertiesUtil.toMap(new String[] {"a1 = b1 "," a2 = b2 ","a3","a4="},null));
+        // Malformed handling
+        assertEquals(expected, PropertiesUtil.toMap(new String[] {"a1 = b1 ", " a2 = b2 ", "a3"}, null));
+        assertEquals(
+                asMap("a1", "b1", "a2", "b2", "a4", null),
+                PropertiesUtil.toMap(new String[] {"a1 = b1 ", " a2 = b2 ", "a3", "a4="}, null));
     }
 
-
-    private static Map<String,String> asMap(String ... entries){
-        Map<String,String> m = new LinkedHashMap<String, String>();
-        for(int i = 0; i < entries.length; i+=2){
-            m.put(entries[i],entries[i+1]);
+    private static Map<String, String> asMap(String... entries) {
+        Map<String, String> m = new LinkedHashMap<String, String>();
+        for (int i = 0; i < entries.length; i += 2) {
+            m.put(entries[i], entries[i + 1]);
         }
         return m;
     }

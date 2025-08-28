@@ -99,7 +99,8 @@ public class ManifestHeaderTest extends TestCase {
     }
 
     public void testQuoting2() {
-        String header = "CQ-INF/content/apps/xyz/docroot;overwrite:=true;path:=/apps/xyz/docroot;ignoreImportProviders:=\"json,xml\"";
+        String header =
+                "CQ-INF/content/apps/xyz/docroot;overwrite:=true;path:=/apps/xyz/docroot;ignoreImportProviders:=\"json,xml\"";
         final ManifestHeader entry = ManifestHeader.parse(header);
         assertEquals(1, entry.getEntries().length);
         assertEquals("CQ-INF/content/apps/xyz/docroot", entry.getEntries()[0].getValue());
@@ -113,9 +114,9 @@ public class ManifestHeaderTest extends TestCase {
         assertEquals("json,xml", entry.getEntries()[0].getDirectives()[2].getValue());
     }
 
-
     public void testMultipleEntries() {
-        String header = "SLING-INF/content/etc;checkin:=true;path:=/etc,\nSLING-INF/content/libs;overwrite:=true;path:=/libs";
+        String header =
+                "SLING-INF/content/etc;checkin:=true;path:=/etc,\nSLING-INF/content/libs;overwrite:=true;path:=/libs";
         final ManifestHeader entry = ManifestHeader.parse(header);
         assertEquals(2, entry.getEntries().length);
         assertEquals("SLING-INF/content/etc", entry.getEntries()[0].getValue());

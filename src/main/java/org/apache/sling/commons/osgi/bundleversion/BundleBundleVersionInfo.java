@@ -27,21 +27,22 @@ public class BundleBundleVersionInfo extends BundleVersionInfo<Bundle> {
 
     private Bundle source;
     private final long lastModified;
-    
+
     public BundleBundleVersionInfo(Bundle b) {
         source = b;
-        
+
         long lastMod = BND_LAST_MODIFIED_MISSING;
-        final String mod = (String)source.getHeaders().get(BND_LAST_MODIFIED);
-        if(mod != null) {
+        final String mod = source.getHeaders().get(BND_LAST_MODIFIED);
+        if (mod != null) {
             try {
                 lastMod = Long.parseLong(mod);
-            } catch(NumberFormatException ignore) {
+            } catch (NumberFormatException ignore) {
+                // Intentionally empty
             }
         }
         lastModified = lastMod;
     }
-    
+
     public long getBundleLastModified() {
         return lastModified;
     }
@@ -55,7 +56,7 @@ public class BundleBundleVersionInfo extends BundleVersionInfo<Bundle> {
     }
 
     public Version getVersion() {
-        final String versionInfo = (String)source.getHeaders().get(Constants.BUNDLE_VERSION);
+        final String versionInfo = source.getHeaders().get(Constants.BUNDLE_VERSION);
         return (versionInfo == null ? null : new Version(versionInfo));
     }
 

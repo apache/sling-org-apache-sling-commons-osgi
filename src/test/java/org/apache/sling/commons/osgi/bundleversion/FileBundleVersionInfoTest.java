@@ -44,9 +44,10 @@ public class FileBundleVersionInfoTest {
         final File testJar = getTestJar("org.apache.sling.api");
         final BundleVersionInfo<?> vi = new FileBundleVersionInfo(testJar);
         assertEquals("org.apache.sling.api", vi.getBundleSymbolicName());
-        assertEquals(vi.getVersion(), new Version("2.0.6"));
+        assertEquals(vi.getVersion(), new Version("2.25.4"));
         assertFalse(vi.isSnapshot());
-        assertEquals(1250080966786L, vi.getBundleLastModified());
+        // NOTE: the 2.25.4 version doesn't include the Bnd-LastModified header anymore
+        assertEquals(-1L, vi.getBundleLastModified());
         assertTrue(vi.isBundle());
         final Object src = vi.getSource();
         assertTrue(src instanceof File);

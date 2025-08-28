@@ -52,7 +52,7 @@ public class BundleFileProcessorTest {
 
         // Just take any bundle from the maven deps as an example...
         File originalFile =
-                getMavenArtifactFile(getMavenRepoRoot(), "org.apache.sling", "org.apache.sling.api", "2.0.6");
+                getMavenArtifactFile(getMavenRepoRoot(), "org.apache.sling", "org.apache.sling.api", "2.25.4");
 
         File generatedFile = new BSNRenamer(originalFile, tempDir, "org.acme.baklava.sling.api").process();
 
@@ -110,7 +110,12 @@ public class BundleFileProcessorTest {
                 }
 
                 assertEquals(je1.getName(), je2.getName());
-                assertEquals(je1.getSize(), je2.getSize());
+                long je1size = je1.getSize();
+                long je2size = je2.getSize();
+                // if either return -1 then the size is not known so we can't compare them
+                if (je1size != -1 && je2size != -1) {
+                    assertEquals(je1size, je2size);
+                }
 
                 try {
                     byte[] buf1 = streamToByteArray(jis1);

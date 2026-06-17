@@ -106,8 +106,8 @@ public class SortingServiceTracker<T> extends ServiceTracker<T, T> {
     }
 
     /**
-     * Return a sorted list of the services references.
-     * @return Service list
+     * Return a sorted list of the service references.
+     * @return Service reference list
      */
     public List<ServiceReference<T>> getSortedServiceReferences() {
         List<ServiceReference<T>> result = this.sortedReferences;

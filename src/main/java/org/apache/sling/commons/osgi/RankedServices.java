@@ -146,7 +146,7 @@ public final class RankedServices<T> implements Iterable<T> {
     }
 
     /**
-     * Update list of sorted services by copying it from the array and making it unmodifiable.
+     * Update list of sorted services by copying it from the map and making it unmodifiable.
      */
     private void updateSortedServices() {
         List<T> copiedList = new ArrayList<>(serviceMap.values());
@@ -193,7 +193,7 @@ public final class RankedServices<T> implements Iterable<T> {
 
         /**
          * Is called when the list of ranked services was changed due to bundle bindings/unbindings.
-         * This method is called within a synchronized block, so it's code should be kept as efficient as possible.
+         * This method is called within a synchronized block, so its code should be kept as efficient as possible.
          */
         void changed();
     }
